@@ -37,4 +37,37 @@ public class City {
             throw new IllegalArgumentException("City can't be larger than " + fullArea);
         }
     }
+
+    public Building findHighestBuilding() {
+        if(buildings.size() == 0){
+            throw new IllegalStateException("No buildings");
+        }
+        Building result = buildings.get(0);
+        for(Building actual : buildings){
+            if (actual.getLevels() > result.getLevels()){
+              result = actual;
+            }
+        }
+        return result;
+    }
+
+    public List<Building> findBuildingsByStreet(String street) {
+        List<Building> result = new ArrayList<>();
+        for(Building actual : buildings){
+            if(actual.getAddress().getStreet().equals(street)){
+                result.add(actual);
+            }
+        }
+        return result;
+    }
+
+    public boolean isThereBuildingWithMorePeopleThan(int numberOfPeople) {
+        for(Building actual : buildings){
+            if(actual.calculateNumberOfPeopleCanFit() > numberOfPeople){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
