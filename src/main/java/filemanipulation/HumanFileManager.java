@@ -34,9 +34,9 @@ public class HumanFileManager {
     public void writeMaleHumansToFile(Path path) {
         try {
             StringBuilder manLinesBuilder = new StringBuilder();
-            for(Human human : humans){
-                if(human.getIdentityNumber().startsWith("1") || human.getIdentityNumber().startsWith("3")){
-                    manLinesBuilder.append(human.getName() + ";" + human.getIdentityNumber() + "\n");
+            for (Human human : humans) {
+                if (human.getIdentityNumber().startsWith("1") || human.getIdentityNumber().startsWith("3")) {
+                    manLinesBuilder.append(human.getName()).append(";").append(human.getIdentityNumber()).append("\n");
                 }
             }
             Files.writeString(path, manLinesBuilder.toString());

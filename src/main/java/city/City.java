@@ -1,6 +1,7 @@
 package city;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class City {
@@ -28,46 +29,66 @@ public class City {
 
     public void addBuilding(Building building) {
         long currentArea = 0;
-        for (Building actual : buildings){
+        for (Building actual : buildings) {
             currentArea += actual.getArea();
         }
-        if(currentArea + building.getArea() <= fullArea){
+        if (currentArea + building.getArea() <= fullArea) {
             buildings.add(building);
-        }else {
+        } else {
             throw new IllegalArgumentException("City can't be larger than " + fullArea);
         }
     }
 
     public Building findHighestBuilding() {
-        if(buildings.size() == 0){
+        if (buildings.size() == 0) {
             throw new IllegalStateException("No buildings");
         }
         Building result = buildings.get(0);
-        for(Building actual : buildings){
-            if (actual.getLevels() > result.getLevels()){
-              result = actual;
+        for (Building actual : buildings) {
+            if (actual.getLevels() > result.getLevels()) {
+                result = actual;
             }
         }
         return result;
     }
 
+    public Building findHighestBuildingWithStream() {
+        return buildings.stream()
+                .max(Comparator.comparingInt(Building::getLevels))
+                .orElseThrow(() -> new IllegalStateException("Empty Building!"));
+    }
+
     public List<Building> findBuildingsByStreet(String street) {
         List<Building> result = new ArrayList<>();
-        for(Building actual : buildings){
-            if(actual.getAddress().getStreet().equals(street)){
+        for (Building actual : buildings) {
+            if (actual.getAddress().getStreet().equals(street)) {
                 result.add(actual);
             }
         }
         return result;
     }
 
+    public List<Building> findBuildingsByStreetWithStream(String street) {
+        return buildings
+                .stream()
+                .filter(building -> building.getAddress().getStreet().equals(street))
+                .toList();
+    }
+
+
     public boolean isThereBuildingWithMorePeopleThan(int numberOfPeople) {
-        for(Building actual : buildings){
-            if(actual.calculateNumberOfPeopleCanFit() > numberOfPeople){
+        for (Building actual : buildings) {
+            if (actual.calculateNumberOfPeopleCanFit() > numberOfPeople) {
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean isThereBuildingWithMorePeopleThanWithStream(int numberOfPeople) {
+            return buildings
+                    .stream()
+                    .anyMatch(building -> building.calculateNumberOfPeopleCanFit() > numberOfPeople);
     }
 
 }
